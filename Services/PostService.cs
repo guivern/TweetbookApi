@@ -24,7 +24,7 @@ namespace TweetbookApi.Services
 
                 for (var i = 0; i < 5; i++)
                 {
-                    posts.Add(new Post { Id = $"{Guid.NewGuid()}", Name = $"Post {i}" });
+                    posts.Add(new Post { Name = $"Post {i + 1}" });
                 }
 
                 _context.Posts.AddRange(posts);
@@ -33,38 +33,42 @@ namespace TweetbookApi.Services
             _logger = logger;
         }
 
-        public async Task<List<Post>> GetAll()
+        public async Task<List<Post>> GetAllAsync()
         {
-            var posts = await _context.Posts.AsNoTracking().ToListAsync();
+            var posts = await _context.Posts.ToListAsync();
             return posts;
         }
 
-        public async Task<Post> GetById(string id)
+        public async Task<Post> GetByIdAsync(int id)
         {
-            var post = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             return post;
         }
 
-        public async Task<Post> Add(Post post)
+        public async Task<Post> CreateAsync(Post post)
         {
-            _context.Posts.Add(post);
+            await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
             return post;
         }
 
-        public async Task<bool> Update(Post post)
+        public async Task<bool> UpdateAsync(Post post)
         {
-            try
-            {
-                _context.Posts.Update(post);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                return false;
-            }
+            _context.Posts.Update(post);
+            var updated = await _context.SaveChangesAsync();
+            return updated > 0;
+        }
+
+        public async Task<bool> DeleteAsync(Post post)
+        {
+            _context.Posts.Remove(post);
+            var deleted = await _context.SaveChangesAsync();
+            return deleted > 0;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await _context.Posts.AnyAsync(x => x.Id == id);
         }
     }
 }

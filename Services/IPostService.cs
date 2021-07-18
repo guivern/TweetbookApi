@@ -6,12 +6,16 @@ namespace TweetbookApi.Services
 {
     public interface IPostService
     {
-         Task<List<Post>> GetAll();
-         
-         Task<Post> GetById(string id);
+        Task<List<Post>> GetAllAsync();
 
-         Task<Post> Add (Post post);
+        Task<Post> GetByIdAsync(int id);
 
-         Task<bool> Update (Post post);
+        Task<Post> CreateAsync(Post post);
+
+        Task<bool> UpdateAsync(Post post);
+
+        Task<bool> DeleteAsync(Post post);
+
+        Task<bool> ExistsAsync(int id);
     }
 }

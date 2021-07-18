@@ -24,7 +24,7 @@ namespace TweetbookApi.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var posts = await _postService.GetAll();
+            var posts = await _postService.GetAllAsync();
             var response = new List<PostResponse>();
 
             foreach (var post in posts)
@@ -36,9 +36,9 @@ namespace TweetbookApi.Controllers.V1
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Detail(string id)
+        public async Task<IActionResult> Detail(int id)
         {
-            var post = await _postService.GetById(id);
+            var post = await _postService.GetByIdAsync(id);
 
             if (post == null)
                 return NotFound();
@@ -51,12 +51,9 @@ namespace TweetbookApi.Controllers.V1
         [HttpPost]
         public async Task<IActionResult> Create(CreatePostRequest request)
         {
-            if (string.IsNullOrEmpty(request.Id))
-                return BadRequest();
+            var newPost = new Post { Name = request.Name };
 
-            var newPost = new Post { Id = request.Id, Name = request.Name };
-
-            var createdPost = await _postService.Add(newPost);
+            var createdPost = await _postService.CreateAsync(newPost);
 
             var response = new PostResponse { Id = createdPost.Id, Name = createdPost.Name };
 
@@ -64,22 +61,32 @@ namespace TweetbookApi.Controllers.V1
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, UpdatePostRequest request)
+        public async Task<IActionResult> Update(int id, UpdatePostRequest request)
         {
             if (request.Id != id)
                 return BadRequest();
 
-            var exits = await _postService.GetById(id) != null;
+            var exits = await _postService.ExistsAsync(id);
 
             if (!exits)
                 return NotFound();
 
             var post = new Post { Id = request.Id, Name = request.Name };
 
-            var updated = await _postService.Update(post);
+            await _postService.UpdateAsync(post);
 
-            if (!updated)
-                return StatusCode(((int)HttpStatusCode.InternalServerError));
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await _postService.GetByIdAsync(id);
+
+            if (post == null)
+                return NotFound();
+
+            await _postService.DeleteAsync(post);
 
             return NoContent();
         }
