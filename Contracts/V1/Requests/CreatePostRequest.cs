@@ -1,4 +1,4 @@
-namespace TweetbookApi.Controllers.V1.Dtos
+namespace TweetbookApi.Contracts.V1.Requests
 {
     public class CreatePostRequest
     {

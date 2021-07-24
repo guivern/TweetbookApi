@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TweetbookApi.Contracts.V1.Requests;
-using TweetbookApi.Controllers.V1.Dtos;
+using TweetbookApi.Contracts.V1.Responses;
 using TweetbookApi.Models;
 using TweetbookApi.Services;
 

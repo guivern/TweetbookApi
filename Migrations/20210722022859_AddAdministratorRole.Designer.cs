@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TweetbookApi.Models;
 
 namespace TweetbookApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210722022859_AddAdministratorRole")]
+    partial class AddAdministratorRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,14 +151,8 @@ namespace TweetbookApi.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "22a8b8d1-e5b6-443d-b616-f20e46c759ad",
+                            ConcurrencyStamp = "1abf9816-bd31-4093-96ca-b9f0949d421a",
                             Name = "Administrator"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ConcurrencyStamp = "950c126a-8d64-4075-be3e-63a9c49e8f0b",
-                            Name = "Tester"
                         });
                 });
 
@@ -173,21 +169,12 @@ namespace TweetbookApi.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");

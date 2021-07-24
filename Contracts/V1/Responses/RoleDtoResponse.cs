@@ -1,6 +1,6 @@
-namespace TweetbookApi.Controllers.V1.Dtos
+namespace TweetbookApi.Contracts.V1.Responses
 {
-    public class PostResponse
+    public class RoleDtoResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
